@@ -4,72 +4,90 @@
     <meta charset="UTF-8">
     <title>Malla Curricular Ingeniería Comercial - UAGRM</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Pacifico&family=Open+Sans:wght@400;700&display=swap');
+
         body {
-            font-family: 'Segoe UI', sans-serif;
-            background: #f9f9f9;
             margin: 0;
             padding: 20px;
+            background: linear-gradient(to right, #f9fafb, #eef2f7);
+            font-family: 'Open Sans', sans-serif;
             color: #333;
         }
         h1 {
+            font-family: 'Pacifico', cursive;
             text-align: center;
-            margin-bottom: 20px;
+            font-size: 3rem;
+            color: #4a148c;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 5px rgba(0,0,0,0.2);
         }
         .grid {
             display: flex;
-            gap: 10px;
+            gap: 15px;
             overflow-x: auto;
+            padding-bottom: 15px;
         }
         .semester {
-            background: #fff;
-            border-radius: 8px;
-            padding: 10px;
-            min-width: 200px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            min-width: 220px;
+            background: white;
+            border-radius: 16px;
+            padding: 15px;
+            box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+            border: 2px solid #ddd;
+            transition: transform 0.2s ease;
+        }
+        .semester:hover {
+            transform: translateY(-5px);
         }
         .semester h2 {
-            font-size: 16px;
-            margin-bottom: 10px;
-            text-align: center;
-            background: #007ACC;
+            background: linear-gradient(90deg, #7e57c2, #ba68c8);
             color: white;
-            padding: 5px;
-            border-radius: 4px;
+            padding: 10px;
+            text-align: center;
+            border-radius: 10px;
+            margin: 0 0 10px;
+            font-size: 1.1rem;
         }
         .subject {
-            margin: 5px 0;
-            padding: 8px;
-            background: #e0e0e0;
-            border-radius: 4px;
+            padding: 10px;
+            margin-bottom: 8px;
+            background: #f3e5f5;
+            border-radius: 8px;
             cursor: pointer;
-            transition: background 0.2s ease;
+            transition: background 0.2s, transform 0.1s;
             position: relative;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.1);
         }
         .subject.approved {
-            background: #a5d6a7;
+            background: linear-gradient(90deg, #81c784, #a5d6a7);
             text-decoration: line-through;
+            color: #333;
         }
         .subject.locked {
-            background: #ccc;
+            background: #d1c4e9;
             cursor: not-allowed;
+            opacity: 0.7;
+        }
+        .subject:hover {
+            transform: scale(1.03);
         }
         .subject:hover::after {
             content: attr(data-tooltip);
             position: absolute;
             top: 0;
             left: 105%;
-            background: #333;
+            background: rgba(0,0,0,0.8);
             color: white;
-            padding: 5px;
-            border-radius: 4px;
-            white-space: nowrap;
+            padding: 6px 8px;
+            border-radius: 5px;
             font-size: 12px;
-            display: block;
+            white-space: nowrap;
+            z-index: 10;
         }
     </style>
 </head>
 <body>
-    <h1>Malla Curricular Ingeniería Comercial - UAGRM</h1>
+    <h1>Malla Curricular</h1>
     <div class="grid" id="malla"></div>
 
     <script>
@@ -147,10 +165,10 @@
             ]}
         ];
 
-        const estado = JSON.parse(localStorage.getItem("mallaEstado")) || {};
+        const estado = JSON.parse(localStorage.getItem("mallaEstadoLettering")) || {};
 
         function saveEstado() {
-            localStorage.setItem("mallaEstado", JSON.stringify(estado));
+            localStorage.setItem("mallaEstadoLettering", JSON.stringify(estado));
         }
 
         function isApproved(id) {
@@ -187,7 +205,6 @@
 
                     div.addEventListener("click", () => {
                         if (!hasApprovedPrereq(mat.prereq)) return;
-
                         estado[mat.id] = !estado[mat.id];
                         saveEstado();
                         renderMalla();
