@@ -4,72 +4,75 @@
     <meta charset="UTF-8">
     <title>Malla Curricular Ingeniería Comercial - UAGRM</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Pacifico&family=Open+Sans:wght@400;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@300;500;700&display=swap');
 
         body {
             margin: 0;
             padding: 20px;
-            background: linear-gradient(to right, #f9fafb, #eef2f7);
-            font-family: 'Open Sans', sans-serif;
-            color: #333;
+            background: linear-gradient(to right, #ffe4ec, #fce4ec);
+            font-family: 'Poppins', sans-serif;
+            color: #444;
         }
         h1 {
             font-family: 'Pacifico', cursive;
             text-align: center;
-            font-size: 3rem;
-            color: #4a148c;
+            font-size: 3.2rem;
+            color: #d81b60;
             margin-bottom: 30px;
-            text-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.15);
         }
         .grid {
             display: flex;
-            gap: 15px;
+            gap: 20px;
             overflow-x: auto;
-            padding-bottom: 15px;
+            padding-bottom: 20px;
         }
         .semester {
             min-width: 220px;
             background: white;
-            border-radius: 16px;
-            padding: 15px;
-            box-shadow: 0 8px 15px rgba(0,0,0,0.1);
-            border: 2px solid #ddd;
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            border: 3px solid #f8bbd0;
             transition: transform 0.2s ease;
         }
         .semester:hover {
             transform: translateY(-5px);
         }
         .semester h2 {
-            background: linear-gradient(90deg, #7e57c2, #ba68c8);
+            background: linear-gradient(90deg, #f48fb1, #f06292);
             color: white;
-            padding: 10px;
+            padding: 12px;
             text-align: center;
-            border-radius: 10px;
-            margin: 0 0 10px;
-            font-size: 1.1rem;
+            border-radius: 14px;
+            margin: 0 0 15px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
         }
         .subject {
-            padding: 10px;
-            margin-bottom: 8px;
-            background: #f3e5f5;
-            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 10px;
+            background: #fde0ef;
+            border-radius: 12px;
             cursor: pointer;
             transition: background 0.2s, transform 0.1s;
             position: relative;
-            box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            font-size: 14px;
         }
         .subject.approved {
-            background: linear-gradient(90deg, #81c784, #a5d6a7);
+            background: linear-gradient(90deg, #f8bbd0, #f48fb1);
+            color: white;
             text-decoration: line-through;
-            color: #333;
         }
         .subject.locked {
-            background: #d1c4e9;
+            background: #fce4ec;
             cursor: not-allowed;
             opacity: 0.7;
         }
         .subject:hover {
-            transform: scale(1.03);
+            transform: scale(1.04);
         }
         .subject:hover::after {
             content: attr(data-tooltip);
@@ -79,7 +82,7 @@
             background: rgba(0,0,0,0.8);
             color: white;
             padding: 6px 8px;
-            border-radius: 5px;
+            border-radius: 8px;
             font-size: 12px;
             white-space: nowrap;
             z-index: 10;
@@ -165,10 +168,10 @@
             ]}
         ];
 
-        const estado = JSON.parse(localStorage.getItem("mallaEstadoLettering")) || {};
+        const estado = JSON.parse(localStorage.getItem("mallaEstadoRosado")) || {};
 
         function saveEstado() {
-            localStorage.setItem("mallaEstadoLettering", JSON.stringify(estado));
+            localStorage.setItem("mallaEstadoRosado", JSON.stringify(estado));
         }
 
         function isApproved(id) {
