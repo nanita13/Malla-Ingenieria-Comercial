@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Malla Curricular Ingeniería Comercial - UAGRM</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #f9f9f9;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .grid {
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+        }
+        .semester {
+            background: #fff;
+            border-radius: 8px;
+            padding: 10px;
+            min-width: 200px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+        .semester h2 {
+            font-size: 16px;
+            margin-bottom: 10px;
+            text-align: center;
+            background: #007ACC;
+            color: white;
+            padding: 5px;
+            border-radius: 4px;
+        }
+        .subject {
+            margin: 5px 0;
+            padding: 8px;
+            background: #e0e0e0;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.2s ease;
+            position: relative;
+        }
+        .subject.approved {
+            background: #a5d6a7;
+            text-decoration: line-through;
+        }
+        .subject.locked {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        .subject:hover::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            top: 0;
+            left: 105%;
+            background: #333;
+            color: white;
+            padding: 5px;
+            border-radius: 4px;
+            white-space: nowrap;
+            font-size: 12px;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <h1>Malla Curricular Ingeniería Comercial - UAGRM</h1>
+    <div class="grid" id="malla"></div>
+
+    <script>
+        const mallaData = [
+            { ciclo: "1er Semestre", materias: [
+                { id: "ADM100", nombre: "Administración I" },
+                { id: "CJS100", nombre: "Administración Tributaria" },
+                { id: "CPA100", nombre: "Contabilidad I" },
+                { id: "ECO100", nombre: "Introducción a la economía" },
+                { id: "INV100", nombre: "Introducción a la investigación" },
+                { id: "MAT100", nombre: "Calculo I" }
+            ]},
+            { ciclo: "2do Semestre", materias: [
+                { id: "ADM150", nombre: "Administración II", prereq: ["ADM100"] },
+                { id: "CPA160", nombre: "Contabilidad II", prereq: ["CPA100"] },
+                { id: "ECO150", nombre: "Microeconomia I", prereq: ["ECO100"] },
+                { id: "MAT160", nombre: "Calculo II", prereq: ["MAT100"] },
+                { id: "PS1150", nombre: "Psicologia Social e industrial" }
+            ]},
+            { ciclo: "3er Semestre", materias: [
+                { id: "ADM200", nombre: "Organizacion y Sistemas", prereq: ["ADM150"] },
+                { id: "CPA200", nombre: "Contabilidad III", prereq: ["CPA160"] },
+                { id: "ECO200", nombre: "Microeconomia II", prereq: ["ECO150"] },
+                { id: "MAT200", nombre: "Algebra Lineal y Teoría Matricial", prereq: ["MAT160"] },
+                { id: "MAT210", nombre: "Estadistica I", prereq: ["MAT160"] }
+            ]},
+            { ciclo: "4to Semestre", materias: [
+                { id: "ADM250", nombre: "Administración Pública", prereq: ["ADM200"] },
+                { id: "CJ3250", nombre: "Legislación Empresarial y Laboral" },
+                { id: "CPA250", nombre: "Costos I", prereq: ["CPA200"] },
+                { id: "ECO250", nombre: "Macroeconomia I", prereq: ["ECO200"] },
+                { id: "MAT250", nombre: "Ingenieria Económica I", prereq: ["MAT200"] },
+                { id: "MAT260", nombre: "Estadistica II", prereq: ["MAT210"] }
+            ]},
+            { ciclo: "5to Semestre", materias: [
+                { id: "ADM300", nombre: "Administración de Personal", prereq: ["ADM250"] },
+                { id: "COM300", nombre: "Administración de Comercialización" },
+                { id: "COM310", nombre: "Comercialización Internacional" },
+                { id: "ECO300", nombre: "Econometria", prereq: ["MAT260"] },
+                { id: "ECO310", nombre: "Desarrollo Eco. y Medio Ambiente", prereq: ["ECO250"] },
+                { id: "MAT300", nombre: "Investigación Operativa I", prereq: ["MAT250"] }
+            ]},
+            { ciclo: "6to Semestre", materias: [
+                { id: "ADM350", nombre: "Administración de la Producción", prereq: ["ADM300"] },
+                { id: "COM350", nombre: "Investigación de Mercados", prereq: ["COM300"] },
+                { id: "COM380", nombre: "Tec. y Herramientas p/ Exportación" },
+                { id: "ECO350", nombre: "Economia Monetaria y Fiscal", prereq: ["ECO250"] },
+                { id: "FIN350", nombre: "Administración Financiera I", prereq: ["CPA250"] },
+                { id: "MAT350", nombre: "Investigación Operativa II", prereq: ["MAT300"] }
+            ]},
+            { ciclo: "7mo Semestre", materias: [
+                { id: "ADN400", nombre: "Comportamiento y Des. Organizacional", prereq: ["ADM350"] },
+                { id: "COM400", nombre: "Estrategia Comercial", prereq: ["COM350"] },
+                { id: "CPA400", nombre: "Auditoria Operativa", prereq: ["CPA250"] },
+                { id: "CPA410", nombre: "Presupuesto y Control", prereq: ["CPA250"] },
+                { id: "ECO400", nombre: "Economia Nacional", prereq: ["ECO350"] },
+                { id: "FIN400", nombre: "Administración Finonciera I", prereq: ["FIN350"] }
+            ]},
+            { ciclo: "8vo Semestre", materias: [
+                { id: "ADM450", nombre: "Teoria de las Decisiones", prereq: ["ADN400"] },
+                { id: "ADM460", nombre: "Sistemas de Información Gerencial" },
+                { id: "COM450", nombre: "Plan y Estrategia Empresarial", prereq: ["COM400"] },
+                { id: "ECO450", nombre: "Diseño y Evaluación de Proyectos", prereq: ["ECO400"] },
+                { id: "ECO460", nombre: "Politica Económica", prereq: ["ECO400"] },
+                { id: "FIN450", nombre: "Administración Financiera II", prereq: ["FIN400"] }
+            ]},
+            { ciclo: "9no Semestre", materias: [
+                { id: "COM500", nombre: "Taller de Investigación de Grado", prereq: ["ADM450"] },
+                { id: "COM520", nombre: "Práctica Empresarial" },
+                { id: "COM540", nombre: "Juego de Negocios" }
+            ]},
+            { ciclo: "10mo Semestre", materias: [
+                { id: "GRL001", nombre: "Modalidad de Graduacion", prereq: ["COM500"] },
+                { id: "GDI550", nombre: "Graduación Directa" }
+            ]}
+        ];
+
+        const estado = JSON.parse(localStorage.getItem("mallaEstado")) || {};
+
+        function saveEstado() {
+            localStorage.setItem("mallaEstado", JSON.stringify(estado));
+        }
+
+        function isApproved(id) {
+            return estado[id] === true;
+        }
+
+        function hasApprovedPrereq(prereq) {
+            return !prereq || prereq.every(id => isApproved(id));
+        }
+
+        function renderMalla() {
+            const container = document.getElementById("malla");
+            container.innerHTML = "";
+
+            mallaData.forEach(sem => {
+                const semDiv = document.createElement("div");
+                semDiv.className = "semester";
+                semDiv.innerHTML = `<h2>${sem.ciclo}</h2>`;
+
+                sem.materias.forEach(mat => {
+                    const div = document.createElement("div");
+                    div.className = "subject";
+                    div.dataset.id = mat.id;
+                    div.textContent = `${mat.id} ${mat.nombre}`;
+
+                    const aprobado = isApproved(mat.id);
+                    const desbloqueado = hasApprovedPrereq(mat.prereq);
+
+                    if (aprobado) div.classList.add("approved");
+                    else if (!desbloqueado) {
+                        div.classList.add("locked");
+                        div.dataset.tooltip = `Requiere: ${mat.prereq?.join(", ")}`;
+                    }
+
+                    div.addEventListener("click", () => {
+                        if (!hasApprovedPrereq(mat.prereq)) return;
+
+                        estado[mat.id] = !estado[mat.id];
+                        saveEstado();
+                        renderMalla();
+                    });
+
+                    semDiv.appendChild(div);
+                });
+
+                container.appendChild(semDiv);
+            });
+        }
+
+        renderMalla();
+    </script>
+</body>
+</html>
